@@ -1,8 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { View, TouchableOpacity, StyleSheet, Animated, Dimensions, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Animated, Dimensions, Image, Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
+import * as Haptics from 'expo-haptics';
 import { currentUser } from '../services/api';
 
 const { width } = Dimensions.get('window');
@@ -35,6 +36,7 @@ export default function FloatingTabBar({ state, descriptors, navigation }: Botto
           const isFocused = state.index === index;
 
           const onPress = () => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
             const event = navigation.emit({
               type: 'tabPress',
               target: route.key,

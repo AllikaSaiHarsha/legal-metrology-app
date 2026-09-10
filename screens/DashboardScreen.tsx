@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState, useCallback } from 'react';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 import { fetchDashboardData } from '../services/api';
 
 export default function DashboardScreen() {
@@ -80,7 +81,7 @@ export default function DashboardScreen() {
             </View>
             <TouchableOpacity 
               style={styles.primaryButton}
-              onPress={() => navigation.navigate('Scanner')}
+              onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); navigation.navigate('Scanner'); }}
             >
               <Ionicons name="scan" size={16} color="#ffffff" style={{ marginRight: 8 }} />
               <Text style={styles.primaryButtonText}>Go to Live Scanner</Text>

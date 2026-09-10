@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator }
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchDashboardData } from '../services/api';
 
@@ -86,7 +87,7 @@ export default function PastScansScreen() {
         <TouchableOpacity 
           style={[styles.pageButton, currentPage === 1 && styles.pageButtonDisabled]}
           disabled={currentPage === 1}
-          onPress={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+          onPress={() => { Haptics.selectionAsync(); setCurrentPage(prev => Math.max(prev - 1, 1)); }}
         >
           <Feather name="chevron-left" size={20} color={currentPage === 1 ? 'rgba(255,255,255,0.3)' : '#ffffff'} />
         </TouchableOpacity>
@@ -98,7 +99,7 @@ export default function PastScansScreen() {
         <TouchableOpacity 
           style={[styles.pageButton, currentPage === totalPages && styles.pageButtonDisabled]}
           disabled={currentPage === totalPages}
-          onPress={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+          onPress={() => { Haptics.selectionAsync(); setCurrentPage(prev => Math.min(prev + 1, totalPages)); }}
         >
           <Feather name="chevron-right" size={20} color={currentPage === totalPages ? 'rgba(255,255,255,0.3)' : '#ffffff'} />
         </TouchableOpacity>

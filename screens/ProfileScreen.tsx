@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, ActivityIn
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { currentUser } from '../services/api';
 
@@ -33,7 +34,7 @@ export default function ProfileScreen({ navigation }: any) {
           
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Inspector Profile</Text>
-            <TouchableOpacity onPress={() => navigation.replace('LoginScreen')}>
+            <TouchableOpacity onPress={() => { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning); navigation.replace('LoginScreen'); }}>
               <Feather name="log-out" size={24} color="#f87171" />
             </TouchableOpacity>
           </View>

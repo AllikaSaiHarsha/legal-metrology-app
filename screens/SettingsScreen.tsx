@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Switch, ScrollView, TouchableOpacity } from 're
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
@@ -32,7 +33,7 @@ export default function SettingsScreen() {
               </View>
               <Switch 
                 value={hapticsEnabled} 
-                onValueChange={setHapticsEnabled}
+                onValueChange={(v) => { Haptics.selectionAsync(); setHapticsEnabled(v); }}
                 trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#818cf8' }}
                 thumbColor="#ffffff"
               />
@@ -46,7 +47,7 @@ export default function SettingsScreen() {
               </View>
               <Switch 
                 value={soundEnabled} 
-                onValueChange={setSoundEnabled}
+                onValueChange={(v) => { Haptics.selectionAsync(); setSoundEnabled(v); }}
                 trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#818cf8' }}
                 thumbColor="#ffffff"
               />
@@ -60,7 +61,7 @@ export default function SettingsScreen() {
               </View>
               <Switch 
                 value={savePhotos} 
-                onValueChange={setSavePhotos}
+                onValueChange={(v) => { Haptics.selectionAsync(); setSavePhotos(v); }}
                 trackColor={{ false: 'rgba(255,255,255,0.1)', true: '#818cf8' }}
                 thumbColor="#ffffff"
               />

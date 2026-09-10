@@ -7,6 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 export default function ScannerScreen() {
   const navigation = useNavigation();
@@ -15,6 +16,7 @@ export default function ScannerScreen() {
   const [scannedImageUri, setScannedImageUri] = useState<string | null>(null);
 
   const handleScan = async (source: 'camera' | 'gallery') => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     try {
       let result;
 
@@ -61,9 +63,11 @@ export default function ScannerScreen() {
           "Scan Complete", 
           `Successfully scanned and synced to dashboard!\n\nProduct: ${analysisData.product_name || 'Unknown'}\nCompliance: ${analysisData.detections.filter(d => d.status === 'Passed').length}/${analysisData.detections.length} Passed`
         );
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
     } catch (error: any) {
       console.error(error);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       Alert.alert("Scan Failed", error.message || "An error occurred during scanning or syncing.");
     } finally {
       setIsScanning(false);
