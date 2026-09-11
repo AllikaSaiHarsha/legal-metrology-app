@@ -1,15 +1,49 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Switch, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
+import * as Updates from 'expo-updates';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SettingsScreen() {
   const [hapticsEnabled, setHapticsEnabled] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [savePhotos, setSavePhotos] = useState(true);
+  const [isCheckingUpdate, setIsCheckingUpdate] = useState(false);
+
+  const checkForUpdates = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    try {
+      setIsCheckingUpdate(true);
+      const update = await Updates.checkForUpdateAsync();
+      
+      if (update.isAvailable) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        Alert.alert(
+          "Update Available!",
+          "A new version of the app is ready. Downloading now...",
+          [{ text: "OK" }]
+        );
+        await Updates.fetchUpdateAsync();
+        Alert.alert(
+          "Download Complete",
+          "The app will now restart to apply the latest features and fixes.",
+          [{ text: "Restart App", onPress: () => Updates.reloadAsync() }]
+        );
+      } else {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+        Alert.alert("Up to Date", "You are already running the latest version of the Legal Metrology app.");
+      }
+    } catch (error: any) {
+      console.error(error);
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      Alert.alert("Error", "Could not check for updates right now.");
+    } finally {
+      setIsCheckingUpdate(false);
+    }
+  };
 
   return (
     <LinearGradient
@@ -87,6 +121,23 @@ export default function SettingsScreen() {
                 <Text style={styles.linkText}>Terms of Service</Text>
               </View>
               <Feather name="chevron-right" size={20} color="#a1a1aa" />
+            </TouchableOpacity>
+
+            <View style={styles.divider} />
+
+            <TouchableOpacity style={styles.linkRow} onPress={checkForUpdates}>
+              <View style={styles.settingInfo}>
+                {isCheckingUpdate ? (
+                  <View style={{ marginRight: 16 }}>
+                     <Feather name="loader" size={20} color="#818cf8" />
+                  </View>
+                ) : (
+                  <Feather name="download-cloud" size={20} color="#818cf8" style={styles.settingIcon} />
+                )}
+                <Text style={[styles.linkText, { color: '#818cf8', fontWeight: '600' }]}>
+                  {isCheckingUpdate ? "Checking..." : "Check for Updates"}
+                </Text>
+              </View>
             </TouchableOpacity>
           </BlurView>
 
