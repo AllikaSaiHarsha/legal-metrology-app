@@ -1,5 +1,4 @@
-// Note: Replace with your actual machine's local IP address if running on a physical device
-// Use 10.0.2.2 for Android Emulator, or localhost/127.0.0.1 for iOS simulator.
+// API Endpoints
 export const BACKEND_API_URL = 'https://legal-metrology-backend-dhto.onrender.com/api/v1'; // Render Cloud AI
 export const WEB_DASHBOARD_API_URL = 'https://legal-metrology-web.vercel.app/api/db/inspections'; // Next.js Cloud App
 
