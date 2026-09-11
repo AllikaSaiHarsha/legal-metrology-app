@@ -172,13 +172,45 @@ export const fetchDashboardData = async (forceRefresh = false) => {
   }
 };
 
-// Global Auth State for Demo
+// Global Auth State with AsyncStorage persistence
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const AUTH_KEY = '@legal_metrology_user';
+
 export let currentUser = {
   name: "Anil Kumar",
   email: "anil.kumar@metrology.gov.in",
   role: "Senior Metrology Inspector",
 };
 
-export const setCurrentUser = (user: any) => {
+export const setCurrentUser = async (user: any) => {
   currentUser = { ...currentUser, ...user };
+  try {
+    await AsyncStorage.setItem(AUTH_KEY, JSON.stringify(currentUser));
+  } catch (e) {
+    console.error('Failed to save user session:', e);
+  }
+};
+
+export const loadSavedUser = async (): Promise<boolean> => {
+  try {
+    const saved = await AsyncStorage.getItem(AUTH_KEY);
+    if (saved) {
+      currentUser = JSON.parse(saved);
+      return true;
+    }
+    return false;
+  } catch (e) {
+    console.error('Failed to load user session:', e);
+    return false;
+  }
+};
+
+export const clearCurrentUser = async () => {
+  currentUser = { name: "", email: "", role: "" };
+  try {
+    await AsyncStorage.removeItem(AUTH_KEY);
+  } catch (e) {
+    console.error('Failed to clear user session:', e);
+  }
 };

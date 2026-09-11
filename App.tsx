@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
 import LoginScreen from './screens/LoginScreen';
 import DashboardScreen from './screens/DashboardScreen';
@@ -13,6 +15,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 
 import FloatingTabBar from './components/FloatingTabBar';
+import { loadSavedUser } from './services/api';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,12 +45,30 @@ function TabNavigator() {
 }
 
 export default function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    loadSavedUser().then((hasSession) => {
+      setIsLoggedIn(hasSession);
+      setIsLoading(false);
+    });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, backgroundColor: '#09090b', justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#818cf8" />
+      </View>
+    );
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#09090b' }}>
       <SafeAreaProvider>
         <NavigationContainer theme={DarkTheme}>
           <Stack.Navigator
-            initialRouteName="LoginScreen"
+            initialRouteName={isLoggedIn ? 'TabNavigator' : 'LoginScreen'}
             screenOptions={{
               headerShown: false,
               animation: 'slide_from_right',

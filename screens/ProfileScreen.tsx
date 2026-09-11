@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { currentUser } from '../services/api';
+import { currentUser, clearCurrentUser } from '../services/api';
 
 export default function ProfileScreen({ navigation }: any) {
   const [team, setTeam] = useState<any[]>([]);
@@ -34,7 +34,7 @@ export default function ProfileScreen({ navigation }: any) {
           
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Inspector Profile</Text>
-            <TouchableOpacity onPress={() => { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning); navigation.replace('LoginScreen'); }}>
+            <TouchableOpacity onPress={async () => { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning); await clearCurrentUser(); navigation.replace('LoginScreen'); }}>
               <Feather name="log-out" size={24} color="#f87171" />
             </TouchableOpacity>
           </View>
