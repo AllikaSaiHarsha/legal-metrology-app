@@ -20,20 +20,18 @@ export default function LoginScreen({ navigation }: any) {
     }
     setLoading(true);
     try {
-      const res = await fetch('http://10.33.203.29:3000/api/db/users');
+      const res = await fetch('https://legal-metrology-web.vercel.app/api/db/users');
       const team = await res.json();
       const matchedUser = team.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
       
       if (matchedUser) {
-        setCurrentUser(matchedUser);
+        await setCurrentUser(matchedUser);
       } else {
-        // Fallback to default if they type something not in the DB, 
-        // just to ensure they can still log into the prototype
-        setCurrentUser({ email, name: email.split('@')[0], role: 'Inspector' });
+        await setCurrentUser({ email, name: email.split('@')[0], role: 'Inspector' });
       }
     } catch (e) {
       console.log('Login fetch error:', e);
-      setCurrentUser({ email, name: email.split('@')[0], role: 'Inspector' });
+      await setCurrentUser({ email, name: email.split('@')[0], role: 'Inspector' });
     }
     setLoading(false);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

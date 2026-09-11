@@ -12,7 +12,7 @@ export default function ProfileScreen({ navigation }: any) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://10.33.203.29:3000/api/db/users')
+    fetch('https://legal-metrology-web.vercel.app/api/db/users')
       .then(res => res.json())
       .then(data => {
         setTeam(data || []);
