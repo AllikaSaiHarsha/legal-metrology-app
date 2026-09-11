@@ -81,7 +81,7 @@ export default function DashboardScreen() {
             </View>
             <TouchableOpacity 
               style={styles.primaryButton}
-              onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); navigation.navigate('Scanner'); }}
+              onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy); navigation.navigate('Scanner'); }}
             >
               <Ionicons name="scan" size={16} color="#ffffff" style={{ marginRight: 8 }} />
               <Text style={styles.primaryButtonText}>Go to Live Scanner</Text>

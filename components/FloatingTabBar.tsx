@@ -36,7 +36,7 @@ export default function FloatingTabBar({ state, descriptors, navigation }: Botto
           const isFocused = state.index === index;
 
           const onPress = () => {
-            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            Haptics.selectionAsync();
             const event = navigation.emit({
               type: 'tabPress',
               target: route.key,

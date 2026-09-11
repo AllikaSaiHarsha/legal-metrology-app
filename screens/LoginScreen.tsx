@@ -13,8 +13,11 @@ export default function LoginScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (!email) return;
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    if (!email) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch('http://10.33.203.29:3000/api/db/users');
@@ -33,6 +36,7 @@ export default function LoginScreen({ navigation }: any) {
       setCurrentUser({ email, name: email.split('@')[0], role: 'Inspector' });
     }
     setLoading(false);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     navigation.replace('TabNavigator');
   };
 

@@ -16,7 +16,8 @@ export default function ScannerScreen() {
   const [scannedImageUri, setScannedImageUri] = useState<string | null>(null);
 
   const handleScan = async (source: 'camera' | 'gallery') => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    // Heavy thunk for camera (shutter feel), light tap for gallery
+    Haptics.impactAsync(source === 'camera' ? Haptics.ImpactFeedbackStyle.Heavy : Haptics.ImpactFeedbackStyle.Light);
     try {
       let result;
 
@@ -63,11 +64,15 @@ export default function ScannerScreen() {
           "Scan Complete", 
           `Successfully scanned and synced to dashboard!\n\nProduct: ${analysisData.product_name || 'Unknown'}\nCompliance: ${analysisData.detections.filter(d => d.status === 'Passed').length}/${analysisData.detections.length} Passed`
         );
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        // Double-pulse success: impact + notification for a premium "cha-ching" feel
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        setTimeout(() => Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success), 150);
       }
     } catch (error: any) {
       console.error(error);
+      // Triple-buzz error pattern
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+      setTimeout(() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy), 200);
       Alert.alert("Scan Failed", error.message || "An error occurred during scanning or syncing.");
     } finally {
       setIsScanning(false);
