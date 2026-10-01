@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
+import { TrueFocus, StarBorder, ClickSpark, ShinyText, DecryptedText, SpotlightCard } from '../components/reactbits';
 
 export default function ScannerScreen() {
   const navigation = useNavigation();
@@ -89,7 +90,7 @@ export default function ScannerScreen() {
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Feather name="arrow-left" size={24} color="#fafafa" />
           </TouchableOpacity>
-          <Text style={styles.title}>Live Inspector</Text>
+          <TrueFocus sentence="Live Inspector" borderColor="#818cf8" textStyle={styles.title} />
           <View style={{ width: 40 }} />
         </View>
 
@@ -129,21 +130,32 @@ export default function ScannerScreen() {
 
               <View style={styles.detectionsList}>
                 {lastScanResult.detections.map((det, idx) => (
-                  <View key={idx} style={styles.detectionRow}>
-                    <View style={styles.detectionInfo}>
-                      <Text style={styles.detectionCategory}>{det.category}</Text>
-                      <Text style={styles.detectionText}>{det.label}</Text>
+                  <SpotlightCard
+                    key={idx}
+                    spotlightColor={det.status === 'Passed' ? 'rgba(52, 211, 153, 0.12)' : 'rgba(248, 113, 133, 0.12)'}
+                    borderRadius={12}
+                    style={{ marginBottom: 8 }}
+                  >
+                    <View style={styles.detectionRow}>
+                      <View style={styles.detectionInfo}>
+                        <Text style={styles.detectionCategory}>{det.category}</Text>
+                        <DecryptedText text={det.label} speed={25} style={styles.detectionText} />
+                      </View>
+                      <View style={[
+                        styles.statusBadge, 
+                        det.status === 'Passed' ? styles.badgePassed : styles.badgeFailed
+                      ]}>
+                        <ShinyText
+                          text={det.status}
+                          style={[
+                            styles.statusText,
+                            det.status === 'Passed' ? styles.textPassed : styles.textFailed
+                          ]}
+                          speed={2}
+                        />
+                      </View>
                     </View>
-                    <View style={[
-                      styles.statusBadge, 
-                      det.status === 'Passed' ? styles.badgePassed : styles.badgeFailed
-                    ]}>
-                      <Text style={[
-                        styles.statusText,
-                        det.status === 'Passed' ? styles.textPassed : styles.textFailed
-                      ]}>{det.status}</Text>
-                    </View>
-                  </View>
+                  </SpotlightCard>
                 ))}
               </View>
             </BlurView>
@@ -153,27 +165,35 @@ export default function ScannerScreen() {
 
         <BlurView intensity={60} tint="dark" style={styles.bottomBar}>
           <View style={styles.buttonRow}>
-            <TouchableOpacity 
-              style={[styles.primaryButton, isScanning && { opacity: 0.7 }]} 
-              onPress={() => handleScan('camera')}
-              disabled={isScanning}
-            >
-              <Ionicons name="camera" size={20} color="#ffffff" style={{ marginRight: 8 }} />
-              <Text style={styles.primaryButtonText}>
-                {scannedImageUri ? "Retake" : "Camera"}
-              </Text>
-            </TouchableOpacity>
+            <StarBorder color="#818cf8" borderRadius={20} style={{ flex: 2 }}>
+              <ClickSpark
+                sparkColor="#818cf8"
+                sparkCount={8}
+                onPress={() => handleScan('camera')}
+                style={{ width: '100%' }}
+              >
+                <View style={[styles.primaryButton, isScanning && { opacity: 0.7 }]}>
+                  <Ionicons name="camera" size={20} color="#ffffff" style={{ marginRight: 8 }} />
+                  <Text style={styles.primaryButtonText}>
+                    {scannedImageUri ? "Retake" : "Camera"}
+                  </Text>
+                </View>
+              </ClickSpark>
+            </StarBorder>
 
-            <TouchableOpacity 
-              style={[styles.secondaryButton, isScanning && { opacity: 0.7 }]} 
+            <ClickSpark
+              sparkColor="#c084fc"
+              sparkCount={6}
               onPress={() => handleScan('gallery')}
-              disabled={isScanning}
+              style={{ flex: 1 }}
             >
-              <Ionicons name="images" size={20} color="#ffffff" style={{ marginRight: 8 }} />
-              <Text style={styles.secondaryButtonText}>
-                Upload
-              </Text>
-            </TouchableOpacity>
+              <View style={[styles.secondaryButton, isScanning && { opacity: 0.7 }]}>
+                <Ionicons name="images" size={20} color="#ffffff" style={{ marginRight: 8 }} />
+                <Text style={styles.secondaryButtonText}>
+                  Upload
+                </Text>
+              </View>
+            </ClickSpark>
           </View>
         </BlurView>
 
@@ -182,7 +202,7 @@ export default function ScannerScreen() {
           <View style={styles.modalOverlay}>
             <BlurView intensity={60} tint="dark" style={styles.modalContent}>
               <ActivityIndicator size="large" color="#ffffff" style={{ marginBottom: 16 }} />
-              <Text style={styles.modalTitle}>Analyzing Label...</Text>
+              <ShinyText text="Analyzing Label..." style={styles.modalTitle} speed={1.5} />
               <Text style={styles.modalSubtitle}>Running AI Optical Character Recognition & syncing with the dashboard.</Text>
             </BlurView>
           </View>
@@ -266,7 +286,7 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: 'rgba(9, 9, 11, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',

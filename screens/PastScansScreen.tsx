@@ -6,6 +6,7 @@ import { Feather } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { fetchDashboardData } from '../services/api';
+import { SpotlightCard, ShinyText, DecryptedText } from '../components/reactbits';
 
 export default function PastScansScreen() {
   const [scans, setScans] = useState<any[]>([]);
@@ -41,42 +42,54 @@ export default function PastScansScreen() {
     const statusIcon = isCompliant ? 'check-circle' : 'x-circle';
 
     return (
-      <BlurView intensity={80} tint="dark" style={styles.scanCard}>
-        <View style={styles.scanHeader}>
-          <Text style={styles.scanDate}>
-            {new Date(item.date).toLocaleDateString()}
+      <SpotlightCard
+        spotlightColor={isCompliant ? 'rgba(74, 222, 128, 0.12)' : 'rgba(248, 113, 113, 0.12)'}
+        borderRadius={24}
+        style={{ marginBottom: 12 }}
+      >
+        <BlurView intensity={80} tint="dark" style={styles.scanCard}>
+          <View style={styles.scanHeader}>
+            <Text style={styles.scanDate}>
+              {new Date(item.date).toLocaleDateString()}
+            </Text>
+            <View style={[styles.statusBadge, { backgroundColor: isCompliant ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)' }]}>
+              <Feather name={statusIcon} size={14} color={statusColor} />
+              <ShinyText
+                text={isCompliant ? 'Compliant' : 'Violation'}
+                style={[styles.statusText, { color: statusColor }]}
+                speed={2.5}
+              />
+            </View>
+          </View>
+
+          <DecryptedText
+            text={product?.name || 'Packaged Commodity'}
+            speed={25}
+            style={styles.productName}
+          />
+          
+          <Text style={styles.companyName}>
+            <Feather name="briefcase" size={14} color="#a1a1aa" /> {product?.manufacturer || 'Manufacturer Details'}
           </Text>
-          <View style={[styles.statusBadge, { backgroundColor: isCompliant ? 'rgba(74, 222, 128, 0.1)' : 'rgba(248, 113, 113, 0.1)' }]}>
-            <Feather name={statusIcon} size={14} color={statusColor} />
-            <Text style={[styles.statusText, { color: statusColor }]}>
-              {isCompliant ? 'Compliant' : 'Violation'}
+
+          <View style={styles.detailsRow}>
+            <Text style={styles.detailText}>
+              Net Qty: <Text style={styles.detailValue}>{product?.netQuantity || 'N/A'}</Text>
+            </Text>
+            <Text style={styles.detailText}>
+              MRP: <Text style={styles.detailValue}>₹{product?.mrp || 'N/A'}</Text>
             </Text>
           </View>
-        </View>
 
-        <Text style={styles.productName}>{product?.name || 'Packaged Commodity'}</Text>
-        
-        <Text style={styles.companyName}>
-          <Feather name="briefcase" size={14} color="#a1a1aa" /> {product?.manufacturer || 'Manufacturer Details'}
-        </Text>
-
-        <View style={styles.detailsRow}>
-          <Text style={styles.detailText}>
-            Net Qty: <Text style={styles.detailValue}>{product?.netQuantity || 'N/A'}</Text>
-          </Text>
-          <Text style={styles.detailText}>
-            MRP: <Text style={styles.detailValue}>₹{product?.mrp || 'N/A'}</Text>
-          </Text>
-        </View>
-
-        {!isCompliant && item.detections && item.detections.length > 0 && (
-          <View style={styles.violationsContainer}>
-            {item.detections.filter((d: any) => d.status !== 'Passed').map((v: any, idx: number) => (
-              <Text key={idx} style={styles.violationText}>• {v.label || v.category}</Text>
-            ))}
-          </View>
-        )}
-      </BlurView>
+          {!isCompliant && item.detections && item.detections.length > 0 && (
+            <View style={styles.violationsContainer}>
+              {item.detections.filter((d: any) => d.status !== 'Passed').map((v: any, idx: number) => (
+                <Text key={idx} style={styles.violationText}>• {v.label || v.category}</Text>
+              ))}
+            </View>
+          )}
+        </BlurView>
+      </SpotlightCard>
     );
   };
 

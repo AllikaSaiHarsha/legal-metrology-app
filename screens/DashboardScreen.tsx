@@ -8,6 +8,7 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { fetchDashboardData } from '../services/api';
+import { ShinyText, StarBorder, SpotlightCard, ClickSpark, DecryptedText } from '../components/reactbits';
 
 export default function DashboardScreen() {
   const navigation = useNavigation<any>();
@@ -74,71 +75,105 @@ export default function DashboardScreen() {
               </View>
               <View style={styles.bannerTextContainer}>
                 <Text style={styles.bannerTitle}>Ready to inspect a new product label?</Text>
-                <Text style={styles.bannerSubtitle}>
-                  Upload package photos for automated Legal Metrology Rule 2011 compliance checks.
-                </Text>
+                <ShinyText
+                  text="Upload package photos for automated Legal Metrology Rule 2011 compliance checks."
+                  style={styles.bannerSubtitle}
+                  speed={2.5}
+                />
               </View>
             </View>
-            <TouchableOpacity 
-              style={styles.primaryButton}
-              onPress={() => { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy); navigation.navigate('Scanner'); }}
-            >
-              <Ionicons name="scan" size={16} color="#ffffff" style={{ marginRight: 8 }} />
-              <Text style={styles.primaryButtonText}>Go to Live Scanner</Text>
-            </TouchableOpacity>
+            <StarBorder color="#818cf8" borderRadius={20} style={{ marginTop: 12 }}>
+              <ClickSpark
+                sparkColor="#818cf8"
+                sparkCount={8}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                  navigation.navigate('Scanner');
+                }}
+              >
+                <View style={styles.primaryButton}>
+                  <Ionicons name="scan" size={16} color="#ffffff" style={{ marginRight: 8 }} />
+                  <Text style={styles.primaryButtonText}>Go to Live Scanner</Text>
+                </View>
+              </ClickSpark>
+            </StarBorder>
           </BlurView>
 
           {/* KPI Cards */}
           <View style={styles.kpiGrid}>
-            <BlurView intensity={60} tint="dark" style={[styles.kpiCard, styles.kpiCardLeft]}>
-              <View style={styles.kpiHeader}>
-                <Feather name="clipboard" size={20} color="#818cf8" />
-                <View style={[styles.trendBadge, { backgroundColor: 'rgba(99, 102, 241, 0.15)' }]}>
-                  <Feather name="trending-up" size={12} color="#a5b4fc" />
-                  <Text style={[styles.trendText, { color: '#a5b4fc' }]}>+12%</Text>
+            <SpotlightCard
+              spotlightColor="rgba(129, 140, 248, 0.16)"
+              borderRadius={24}
+              style={[styles.kpiCardWrapper, styles.kpiCardLeft]}
+            >
+              <BlurView intensity={60} tint="dark" style={styles.kpiCardInner}>
+                <View style={styles.kpiHeader}>
+                  <Feather name="clipboard" size={20} color="#818cf8" />
+                  <View style={[styles.trendBadge, { backgroundColor: 'rgba(99, 102, 241, 0.15)' }]}>
+                    <Feather name="trending-up" size={12} color="#a5b4fc" />
+                    <Text style={[styles.trendText, { color: '#a5b4fc' }]}>+12%</Text>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.kpiValue}>{loading ? '...' : stats.total}</Text>
-              <Text style={styles.kpiTitle}>Total Inspections</Text>
-            </BlurView>
+                <Text style={styles.kpiValue}>{loading ? '...' : stats.total}</Text>
+                <Text style={styles.kpiTitle}>Total Inspections</Text>
+              </BlurView>
+            </SpotlightCard>
 
-            <BlurView intensity={60} tint="dark" style={[styles.kpiCard, styles.kpiCardRight]}>
-              <View style={styles.kpiHeader}>
-                <Feather name="shield" size={20} color="#34d399" />
-                <View style={[styles.trendBadge, { backgroundColor: 'rgba(16, 185, 129, 0.15)' }]}>
-                  <Feather name="trending-up" size={12} color="#6ee7b7" />
-                  <Text style={[styles.trendText, { color: '#6ee7b7' }]}>+2.4%</Text>
+            <SpotlightCard
+              spotlightColor="rgba(52, 211, 153, 0.16)"
+              borderRadius={24}
+              style={[styles.kpiCardWrapper, styles.kpiCardRight]}
+            >
+              <BlurView intensity={60} tint="dark" style={styles.kpiCardInner}>
+                <View style={styles.kpiHeader}>
+                  <Feather name="shield" size={20} color="#34d399" />
+                  <View style={[styles.trendBadge, { backgroundColor: 'rgba(16, 185, 129, 0.15)' }]}>
+                    <Feather name="trending-up" size={12} color="#6ee7b7" />
+                    <Text style={[styles.trendText, { color: '#6ee7b7' }]}>+2.4%</Text>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.kpiValue}>{loading ? '...' : `${stats.complianceRate}%`}</Text>
-              <Text style={styles.kpiTitle}>Compliance Rate</Text>
-            </BlurView>
+                <Text style={styles.kpiValue}>{loading ? '...' : `${stats.complianceRate}%`}</Text>
+                <Text style={styles.kpiTitle}>Compliance Rate</Text>
+              </BlurView>
+            </SpotlightCard>
           </View>
 
           <View style={styles.kpiGrid}>
-            <BlurView intensity={60} tint="dark" style={[styles.kpiCard, styles.kpiCardLeft]}>
-              <View style={styles.kpiHeader}>
-                <Feather name="alert-triangle" size={20} color="#fb7185" />
-                <View style={[styles.trendBadge, { backgroundColor: 'rgba(244, 63, 94, 0.15)' }]}>
-                  <Feather name="trending-down" size={12} color="#fda4af" />
-                  <Text style={[styles.trendText, { color: '#fda4af' }]}>-5%</Text>
+            <SpotlightCard
+              spotlightColor="rgba(251, 113, 133, 0.16)"
+              borderRadius={24}
+              style={[styles.kpiCardWrapper, styles.kpiCardLeft]}
+            >
+              <BlurView intensity={60} tint="dark" style={styles.kpiCardInner}>
+                <View style={styles.kpiHeader}>
+                  <Feather name="alert-triangle" size={20} color="#fb7185" />
+                  <View style={[styles.trendBadge, { backgroundColor: 'rgba(244, 63, 94, 0.15)' }]}>
+                    <Feather name="trending-down" size={12} color="#fda4af" />
+                    <Text style={[styles.trendText, { color: '#fda4af' }]}>-5%</Text>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.kpiValue}>{loading ? '...' : stats.activeViolations}</Text>
-              <Text style={styles.kpiTitle}>Active Violations</Text>
-            </BlurView>
+                <Text style={styles.kpiValue}>{loading ? '...' : stats.activeViolations}</Text>
+                <Text style={styles.kpiTitle}>Active Violations</Text>
+              </BlurView>
+            </SpotlightCard>
 
-            <BlurView intensity={60} tint="dark" style={[styles.kpiCard, styles.kpiCardRight]}>
-              <View style={styles.kpiHeader}>
-                <Feather name="clock" size={20} color="#fbbf24" />
-                <View style={[styles.trendBadge, { backgroundColor: 'rgba(245, 158, 11, 0.15)' }]}>
-                  <Feather name="trending-up" size={12} color="#fcd34d" />
-                  <Text style={[styles.trendText, { color: '#fcd34d' }]}>+8</Text>
+            <SpotlightCard
+              spotlightColor="rgba(251, 191, 36, 0.16)"
+              borderRadius={24}
+              style={[styles.kpiCardWrapper, styles.kpiCardRight]}
+            >
+              <BlurView intensity={60} tint="dark" style={styles.kpiCardInner}>
+                <View style={styles.kpiHeader}>
+                  <Feather name="clock" size={20} color="#fbbf24" />
+                  <View style={[styles.trendBadge, { backgroundColor: 'rgba(245, 158, 11, 0.15)' }]}>
+                    <Feather name="trending-up" size={12} color="#fcd34d" />
+                    <Text style={[styles.trendText, { color: '#fcd34d' }]}>+8</Text>
+                  </View>
                 </View>
-              </View>
-              <Text style={styles.kpiValue}>{loading ? '...' : stats.pendingAudits}</Text>
-              <Text style={styles.kpiTitle}>Pending Audits</Text>
-            </BlurView>
+                <Text style={styles.kpiValue}>{loading ? '...' : stats.pendingAudits}</Text>
+                <Text style={styles.kpiTitle}>Pending Audits</Text>
+              </BlurView>
+            </SpotlightCard>
           </View>
 
           {/* Recent Inspections */}
@@ -157,29 +192,35 @@ export default function DashboardScreen() {
                 recentScans.map((scan) => {
                   const product = products.find(p => p.id === scan.productId);
                   return (
-                    <BlurView intensity={60} tint="dark" key={scan.id} style={styles.listItem}>
-                      <View style={styles.listItemHeader}>
-                        <Text style={styles.listItemId}>{scan.id}</Text>
-                        <View style={[styles.statusBadge, { 
-                          backgroundColor: scan.status === 'completed' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)' 
-                        }]}>
-                          <Text style={[styles.statusText, { 
-                            color: scan.status === 'completed' ? '#6ee7b7' : '#fcd34d' 
+                    <SpotlightCard
+                      key={scan.id}
+                      spotlightColor="rgba(129, 140, 248, 0.12)"
+                      borderRadius={16}
+                    >
+                      <BlurView intensity={60} tint="dark" style={styles.listItem}>
+                        <View style={styles.listItemHeader}>
+                          <DecryptedText text={scan.id} speed={30} style={styles.listItemId} />
+                          <View style={[styles.statusBadge, { 
+                            backgroundColor: scan.status === 'completed' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)' 
                           }]}>
-                            {scan.status}
+                            <Text style={[styles.statusText, { 
+                              color: scan.status === 'completed' ? '#6ee7b7' : '#fcd34d' 
+                            }]}>
+                              {scan.status}
+                            </Text>
+                          </View>
+                        </View>
+                        <Text style={styles.listItemTitle}>{product?.name || scan.location}</Text>
+                        <View style={styles.listItemFooter}>
+                          <Text style={styles.listItemSub}>{new Date(scan.date).toLocaleDateString()}</Text>
+                          <Text style={[styles.complianceScore, { 
+                            color: scan.complianceScore >= 80 ? '#6ee7b7' : '#fda4af' 
+                          }]}>
+                            {scan.complianceScore}% Score
                           </Text>
                         </View>
-                      </View>
-                      <Text style={styles.listItemTitle}>{product?.name || scan.location}</Text>
-                      <View style={styles.listItemFooter}>
-                        <Text style={styles.listItemSub}>{new Date(scan.date).toLocaleDateString()}</Text>
-                        <Text style={[styles.complianceScore, { 
-                          color: scan.complianceScore >= 80 ? '#6ee7b7' : '#fda4af' 
-                        }]}>
-                          {scan.complianceScore}% Score
-                        </Text>
-                      </View>
-                    </BlurView>
+                      </BlurView>
+                    </SpotlightCard>
                   );
                 })
               ) : (
@@ -282,8 +323,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 16,
   },
-  kpiCard: {
+  kpiCardWrapper: {
     flex: 1,
+  },
+  kpiCardInner: {
     borderRadius: 24,
     padding: 16,
     borderWidth: 1,
