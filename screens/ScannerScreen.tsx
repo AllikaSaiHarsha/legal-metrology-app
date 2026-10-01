@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import { TrueFocus, StarBorder, ClickSpark, ShinyText, DecryptedText, SpotlightCard } from '../components/reactbits';
+import { ShinyText, DecryptedText, SpotlightCard } from '../components/reactbits';
 
 export default function ScannerScreen() {
   const navigation = useNavigation();
@@ -87,10 +87,10 @@ export default function ScannerScreen() {
     >
       <SafeAreaView style={styles.safeArea} edges={['top']}>
         <View style={styles.topBar}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()} activeOpacity={0.7}>
             <Feather name="arrow-left" size={24} color="#fafafa" />
           </TouchableOpacity>
-          <TrueFocus sentence="Live Inspector" borderColor="#818cf8" textStyle={styles.title} />
+          <Text style={styles.title}>Live Inspector</Text>
           <View style={{ width: 40 }} />
         </View>
 
@@ -165,35 +165,36 @@ export default function ScannerScreen() {
 
         <BlurView intensity={60} tint="dark" style={styles.bottomBar}>
           <View style={styles.buttonRow}>
-            <StarBorder color="#818cf8" borderRadius={20} style={{ flex: 2 }}>
-              <ClickSpark
-                sparkColor="#818cf8"
-                sparkCount={8}
-                onPress={() => handleScan('camera')}
-                style={{ width: '100%' }}
-              >
-                <View style={[styles.primaryButton, isScanning && { opacity: 0.7 }]}>
-                  <Ionicons name="camera" size={20} color="#ffffff" style={{ marginRight: 8 }} />
-                  <Text style={styles.primaryButtonText}>
-                    {scannedImageUri ? "Retake" : "Camera"}
-                  </Text>
-                </View>
-              </ClickSpark>
-            </StarBorder>
-
-            <ClickSpark
-              sparkColor="#c084fc"
-              sparkCount={6}
-              onPress={() => handleScan('gallery')}
-              style={{ flex: 1 }}
+            <TouchableOpacity
+              style={[styles.primaryButton, isScanning && { opacity: 0.6 }]}
+              onPress={() => handleScan('camera')}
+              disabled={isScanning}
+              activeOpacity={0.8}
             >
-              <View style={[styles.secondaryButton, isScanning && { opacity: 0.7 }]}>
-                <Ionicons name="images" size={20} color="#ffffff" style={{ marginRight: 8 }} />
-                <Text style={styles.secondaryButtonText}>
-                  Upload
+              <LinearGradient
+                colors={['#6366f1', '#4f46e5']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.primaryButtonGradient}
+              >
+                <Ionicons name="camera" size={20} color="#ffffff" style={{ marginRight: 8 }} />
+                <Text style={styles.primaryButtonText}>
+                  {scannedImageUri ? "Retake" : "Camera"}
                 </Text>
-              </View>
-            </ClickSpark>
+              </LinearGradient>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.secondaryButton, isScanning && { opacity: 0.6 }]}
+              onPress={() => handleScan('gallery')}
+              disabled={isScanning}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="images" size={20} color="#ffffff" style={{ marginRight: 8 }} />
+              <Text style={styles.secondaryButtonText}>
+                Upload
+              </Text>
+            </TouchableOpacity>
           </View>
         </BlurView>
 
@@ -385,41 +386,53 @@ const styles = StyleSheet.create({
     color: '#fb7185',
   },
   bottomBar: {
-    padding: 24,
+    paddingHorizontal: 20,
+    paddingVertical: 18,
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
     overflow: 'hidden',
   },
   buttonRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     gap: 12,
   },
   primaryButton: {
     flex: 2,
-    flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    height: 54,
     borderRadius: 20,
-    paddingVertical: 16,
+    overflow: 'hidden',
+    shadowColor: '#6366f1',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  primaryButtonGradient: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   primaryButtonText: {
     color: '#ffffff',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
   secondaryButton: {
     flex: 1,
+    height: 54,
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
     borderRadius: 20,
-    paddingVertical: 16,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   secondaryButtonText: {
     color: '#ffffff',

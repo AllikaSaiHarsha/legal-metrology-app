@@ -8,7 +8,7 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { fetchDashboardData } from '../services/api';
-import { ShinyText, StarBorder, SpotlightCard, ClickSpark, DecryptedText } from '../components/reactbits';
+import { ShinyText, SpotlightCard, DecryptedText } from '../components/reactbits';
 
 export default function DashboardScreen() {
   const navigation = useNavigation<any>();
@@ -82,21 +82,25 @@ export default function DashboardScreen() {
                 />
               </View>
             </View>
-            <StarBorder color="#818cf8" borderRadius={20} style={{ marginTop: 12 }}>
-              <ClickSpark
-                sparkColor="#818cf8"
-                sparkCount={8}
-                onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  navigation.navigate('Scanner');
-                }}
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={styles.primaryButton}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                navigation.navigate('Scanner');
+              }}
+            >
+              <LinearGradient
+                colors={['#6366f1', '#4f46e5']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.primaryButtonGradient}
               >
-                <View style={styles.primaryButton}>
-                  <Ionicons name="scan" size={16} color="#ffffff" style={{ marginRight: 8 }} />
-                  <Text style={styles.primaryButtonText}>Go to Live Scanner</Text>
-                </View>
-              </ClickSpark>
-            </StarBorder>
+                <Ionicons name="scan" size={18} color="#ffffff" style={{ marginRight: 8 }} />
+                <Text style={styles.primaryButtonText}>Go to Live Scanner</Text>
+                <Feather name="arrow-right" size={16} color="rgba(255,255,255,0.7)" style={{ marginLeft: 6 }} />
+              </LinearGradient>
+            </TouchableOpacity>
           </BlurView>
 
           {/* KPI Cards */}
@@ -305,19 +309,30 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   primaryButton: {
-    flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)', // Apple frosted button
     borderRadius: 20,
+    marginTop: 14,
+    overflow: 'hidden',
+    shadowColor: '#6366f1',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.35,
+    shadowRadius: 10,
+    elevation: 6,
+  },
+  primaryButtonGradient: {
+    flexDirection: 'row',
     paddingVertical: 14,
+    paddingHorizontal: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.25)',
   },
   primaryButtonText: {
     color: '#ffffff',
     fontSize: 15,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
   kpiGrid: {
     flexDirection: 'row',
