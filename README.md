@@ -1,6 +1,7 @@
 # Legal Metrology Mobile Field Scanner 📱📦
 
 [![Mobile App CI](https://github.com/AllikaSaiHarsha/legal-metrology-app/actions/workflows/ci.yml/badge.svg)](https://github.com/AllikaSaiHarsha/legal-metrology-app/actions/workflows/ci.yml)
+[![GitHub Release](https://img.shields.io/badge/Release-v1.0.0-34A853?style=flat-square&logo=github&logoColor=white)](https://github.com/AllikaSaiHarsha/legal-metrology-app/releases/tag/v1.0.0)
 [![React Native](https://img.shields.io/badge/React_Native-0.86-20232A?style=flat-square&logo=react&logoColor=61DAFB)](https://reactnative.dev)
 [![Expo](https://img.shields.io/badge/Expo-SDK_57-000020?style=flat-square&logo=expo&logoColor=white)](https://expo.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
@@ -24,6 +25,15 @@ Field officers inspecting grocery stores, supermarkets, and wholesale markets fr
 
 ### The Mobile Solution:
 With this app, an inspector points their smartphone camera at any package label, captures a photograph with tactile haptic feedback, and receives an **instant 3-second Rule 6 compliance scorecard** with live synchronization to the headquarters [Web Command Center](https://github.com/AllikaSaiHarsha/legal-metrology-web).
+
+---
+
+## 📸 Field Inspection Interface
+
+<div align="center">
+  <p><strong>Mobile Packaging Audit & Real-Time Rule 6 Declarations Extraction:</strong></p>
+  <img src="docs/field-scanner-preview.png" alt="Field Inspection Scorecard with 2D Bounding Boxes" width="100%" />
+</div>
 
 ---
 
